@@ -138,18 +138,19 @@ public class RealPathUtil {
  }
 
  public static String getImagePath(Context context, Uri uri){
-    if ("content".equalsIgnoreCase(uri.getScheme())) {
-
-        if (isGoogleOldPhotosUri(uri)) {
-            // return http path, then download file.
-            return uri.getLastPathSegment();
-        } else if (isGoogleNewPhotosUri(uri) || isMMSFile(uri)) {
-            // copy from uri. context.getContentResolver().openInputStream(uri);
-            return copyFile(context, uri);
-        }
+   if (!"content".equalsIgnoreCase((uri.getScheme()))) {
+        return getDataColumn(context, uri, null, null);
     }
+    else {
 
-    return getDataColumn(context, uri, null, null);
+       if (isGoogleOldPhotosUri(uri)) {
+           // return http path, then download file.
+           return uri.getLastPathSegment();
+       } else {
+           // copy from uri. context.getContentResolver().openInputStream(uri);
+           return copyFile(context, uri);
+       }
+   }
  }
 
  /**
